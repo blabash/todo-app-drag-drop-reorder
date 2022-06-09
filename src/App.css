@@ -28,11 +28,20 @@
 /* =========Typography======== */
 body {
   font-family: var(--primary-font);
+  color: var(--very-dark-grayish-blue);
 }
 
 h1 {
   letter-spacing: .4em;
   color: var(--very-light-gray);
+}
+
+.dark-grayish-blue {
+  color: var(--dark-grayish-blue);
+}
+
+.font-weight-bold {
+  font-weight: bold;
 }
 
 /* =========Elements======== */
@@ -43,6 +52,8 @@ h1 {
 
 button {
   background-color: inherit;
+  font-weight: inherit;
+  color: inherit;
   border: none;
 }
 
@@ -83,17 +94,32 @@ ul > li + li {
   }
 
   .todos-container > ul {
-    box-shadow: 0px 160px 140px -40px #e6e6e6;
-  }
-
-  .todos-container > ul,
-  .todos-container > ul + div {
+    box-shadow: 0px 160px 140px 20px #e6e6e6;
     background-color: white;
   }
 
-  .todos-container > p {
-    color: var(--dark-grayish-blue);
-    margin-top: 1em;
+  .todo-item {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+  }
+
+  .check-icon-bg {
+    padding: 0.5em;
+    background-image: linear-gradient(-45deg, hsl(192, 100%, 67%), hsl(280, 87%, 65%));
+    border-radius: 50%;
+    border: 1px solid var(--light-grayish-blue);
+    display: flex;
+    margin-right: 1em;
+  }
+
+  .check-icon-bg {
+    width: .5rem;
+    height: .5rem;
+    background-image: linear-gradient(-45deg, hsl(192, 100%, 67%), hsl(280, 87%, 65%));
+    border-radius: 50%;
+    border: 1px solid var(--light-grayish-blue);
+    margin-right: 1em;
   }
 
 /* =========Utility======== */
@@ -128,6 +154,10 @@ ul > li + li {
 
   .padding-1em {
     padding: 1em;
+  }
+
+  .margin-top-1em {
+    margin-top: 1em;
   }
 @media (min-width: 561px) {
 
