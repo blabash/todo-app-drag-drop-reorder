@@ -22,7 +22,7 @@ function App() {
           id=""
           placeholder="Create a new todo..."
         />
-        <ul>
+        <ul className="bg-color-white">
           <li className="todo-item padding-1em">
             <span className="check-icon-bg flex-row justify-content-center">
               <img src={checkIcon} alt="moon icon" />
@@ -56,7 +56,7 @@ function App() {
             <button>Clear Completed</button>
           </li>
         </ul>
-        <div className="flex-row justify-content-center padding-1em font-weight-bold">
+        <div className="flex-row justify-content-center padding-1em font-weight-bold bg-color-white">
           <button>All</button>
           <button>Active</button>
           <button>Completed</button>
