@@ -1,9 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Epilogue:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;700&display=swap');
 /* =========Variables======== */
 :root {
   font-size: 18px;
   --mobile-breakpoint: 376px;
-  --primary-font: "Epilogue", serif;
+  --primary-font: "Josefin Sans", sans-serif;
   --medium-font-weight: 400;
   --bold-font-weight: 700;
   /* Primary Colors */
@@ -36,16 +36,7 @@ h1 {
   color: var(--very-light-gray);
 }
 
-.dark-grayish-blue {
-  color: var(--dark-grayish-blue);
-}
-
-.font-weight-bold {
-  font-weight: bold;
-}
-
 /* =========Elements======== */
-
 p,
 h1 {
   margin: 0;
@@ -58,6 +49,7 @@ input {
 
 button {
   background-color: inherit;
+  font-family: inherit;
   font-size: inherit;
   font-weight: inherit;
   color: inherit;
@@ -69,10 +61,6 @@ ul {
   list-style: none;
   padding-left: 0;
   margin: 0;
-}
-
-ul > li + li {
-  border-top: 1px solid var(--light-grayish-blue);
 }
 
 /* =========Layout======== */
@@ -103,6 +91,7 @@ ul > li + li {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin: 1.5em 0;
 }
 
 .todos-container__input-container {
@@ -131,11 +120,15 @@ ul > li + li {
   background-color: white;
 }
 
-.todos-container__todo-list>li {
+.todos-container__todo-list > li {
   display: grid;
   grid-template-columns: auto 1fr auto;
   align-items: center;
   padding: 1em;
+}
+
+.todos-container__todo-list > li + li {
+  border-top: 1px solid var(--light-grayish-blue);
 }
 
 .todos-container__todo-list>li:last-of-type {
@@ -164,6 +157,7 @@ ul > li + li {
   padding: 1em;
   font-weight: bold;
   background-color: white;
+  color: var(--dark-grayish-blue);
 }
 
 .todos-container__description {
@@ -176,6 +170,7 @@ ul > li + li {
   .mobile-display-none {
     display: none;
   }
+
 @media (min-width: 561px) {
 
   /* =========Typography======== */
@@ -183,6 +178,11 @@ ul > li + li {
   /* =========Elements======== */
 
   /* =========Layout======== */
+    .todos-app {
+      background: url(./images/bg-desktop-light.jpg);
+      background-size: contain;
+      background-repeat: no-repeat;
+    }
 
   /* =========Components======== */
     .todos-container__todo-filter {
