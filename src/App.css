@@ -6,6 +6,7 @@
   --primary-font: "Josefin Sans", sans-serif;
   --medium-font-weight: 400;
   --bold-font-weight: 700;
+  --todo-list-border-radius: .33rem;
   /* Primary Colors */
   --bright-blue: hsl(220, 98%, 61%);
   --check-bg: linear-gradient hsl(192, 100%, 67%) to hsl(280, 87%, 65%);
@@ -67,8 +68,9 @@ ul {
 .todos-app {
   display: grid;
   min-height: 100vh;
+  background-color: var(--dark-grayish-blue);
   background: url(./images/bg-mobile-light.jpg);
-  background-size: contain;
+  background-size: 100% 33%;
   background-repeat: no-repeat;
   justify-items: center;
   align-items: baseline;
@@ -84,7 +86,7 @@ ul {
 }
 
 .todos-container > * {
-  border-radius: .33rem;
+  border-radius: var(--todo-list-border-radius);
 }
 
 .todos-container__header {
@@ -116,8 +118,20 @@ ul {
 }
 
 .todos-container__todo-list {
-  box-shadow: 0px 160px 140px 20px #e6e6e6;
+  position: relative;
   background-color: white;
+}
+
+.todos-container__todo-list::before {
+  content: "";
+  position: absolute;
+  border-radius: var(--todo-list-border-radius);
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: -1;
+  box-shadow: 0px 50px 70px 10px #e6e6e6;
 }
 
 .todos-container__todo-list > li {
@@ -158,12 +172,13 @@ ul {
   font-weight: bold;
   background-color: white;
   color: var(--dark-grayish-blue);
+  box-shadow: 0px 20px 70px 10px #e6e6e6;
 }
 
 .todos-container__description {
   text-align: center;
   color: var(--dark-grayish-blue);
-  margin-top: 1em;
+  margin-top: 3em;
 }
 
 /* =========Utility======== */
@@ -178,19 +193,24 @@ ul {
   /* =========Elements======== */
 
   /* =========Layout======== */
-    .todos-app {
-      background: url(./images/bg-desktop-light.jpg);
-      background-size: contain;
-      background-repeat: no-repeat;
-    }
 
   /* =========Components======== */
     .todos-container__todo-filter {
       display: flex;
       padding: 0;
+      box-shadow: none;
     }
   /* =========Utility======== */
     .desktop-display-none {
       display: none;
+    }
+}
+
+@media (min-width: 800px) {
+  /* =========Layout======== */
+    .todos-app {
+      background: url(./images/bg-desktop-light.jpg);
+      background-size: 100% 33%;
+      background-repeat: no-repeat;
     }
 }
