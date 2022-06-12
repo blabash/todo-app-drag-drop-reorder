@@ -17,45 +17,50 @@ function App() {
         </div>
         <div className="todos-container__input-container">
           <span>
-            <img src={checkIcon} alt="moon icon" />
+            <img src={checkIcon} alt="check icon" />
           </span>
           <input type="text" name="" id="" placeholder="Create a new todo..." />
         </div>
         <ul className="todos-container__todo-list">
           <li>
             <span>
-              <img src={checkIcon} alt="moon icon" />
+              <img src={checkIcon} alt="check icon" />
             </span>
             <p>test 1</p>
-            <img src={crossIcon} alt="moon icon" />
+            <img src={crossIcon} alt="cross icon" />
           </li>
           <li>
             <span>
-              <img src={checkIcon} alt="moon icon" />
+              <img src={checkIcon} alt="check icon" />
             </span>
             <p>test 1</p>
-            <img src={crossIcon} alt="moon icon" />
+            <img src={crossIcon} alt="cross icon" />
           </li>
           <li>
             <span>
-              <img src={checkIcon} alt="moon icon" />
+              <img src={checkIcon} alt="check icon" />
             </span>
             <p>test 1</p>
-            <img src={crossIcon} alt="moon icon" />
+            <img src={crossIcon} alt="cross icon" />
           </li>
           <li>
             <span>
-              <img src={checkIcon} alt="moon icon" />
+              <img src={checkIcon} alt="check icon" />
             </span>
             <p>test 1</p>
-            <img src={crossIcon} alt="moon icon" />
+            <img src={crossIcon} alt="cross icon" />
           </li>
           <li>
             <p>5 items left</p>
+            <div className="todos-container__todo-filter mobile-display-none">
+              <button>All</button>
+              <button>Active</button>
+              <button>Completed</button>
+            </div>
             <button>Clear Completed</button>
           </li>
         </ul>
-        <div className="todos-container__todo-filter">
+        <div className="todos-container__todo-filter desktop-display-none">
           <button>All</button>
           <button>Active</button>
           <button>Completed</button>
