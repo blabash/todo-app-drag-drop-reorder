@@ -67,6 +67,7 @@ const TodoItem = ({ todo, todosDispatch }: TodoItemProps) => {
       </span>
       <p>{todo.text}</p>
       <img
+        className="todos-container__delete-btn"
         src={crossIcon}
         alt="delete todo button"
         data-todo-id={todo.id}
