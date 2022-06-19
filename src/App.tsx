@@ -39,6 +39,28 @@ const todosReducer = (
   }
 };
 
+type TodosDescriptionProps = {};
+
+const TodosDescription = (props: TodosDescriptionProps) => {
+  return (
+    <p className="todos-container__description">
+      Drag and drop to reorder list
+    </p>
+  );
+};
+
+type TodosFilterMobileProps = {};
+
+const TodosFilterMobile = (props: TodosFilterMobileProps) => {
+  return (
+    <div className="todos-container__filters todos-container__filters--mobile">
+      <button>All</button>
+      <button>Active</button>
+      <button>Completed</button>
+    </div>
+  );
+};
+
 type TodoItemProps = {
   todo: Todo;
   todosDispatch: React.Dispatch<TODOACTIONTYPE>;
@@ -143,48 +165,50 @@ const TodosInput = ({ text, setText, todosDispatch }: TodosInputProps) => {
   );
 };
 
-type TodosProps = {};
+type TodosHeaderProps = {};
 
-const Todos = (props: TodosProps) => {
+const TodosHeader = (props: TodosHeaderProps) => {
+  return (
+    <div className="todos-container__header">
+      <h1>TODO</h1>
+      <button>
+        <img src={moonIcon} alt="moon icon" />
+      </button>
+    </div>
+  );
+};
+
+type TodosContainerProps = {
+  children?: React.ReactNode;
+};
+
+const TodosContainer = ({ children }: TodosContainerProps) => {
+  return <div className="todos-container">{children}</div>;
+};
+
+function App() {
   const [text, setText] = useState("");
   const [todosState, todosDispatch] = useReducer(
     todosReducer,
     initialTodosState
   );
 
-  console.log(todosState);
-
-  return (
-    <>
-      <TodosInput text={text} setText={setText} todosDispatch={todosDispatch} />
-      <TodosUndorderedList
-        todosState={todosState}
-        todosDispatch={todosDispatch}
-      />
-    </>
-  );
-};
-
-function App() {
   return (
     <main className="todos-app">
-      <div className="todos-container">
-        <div className="todos-container__header">
-          <h1>TODO</h1>
-          <button>
-            <img src={moonIcon} alt="moon icon" />
-          </button>
-        </div>
-        <Todos />
-        <div className="todos-container__filters todos-container__filters--mobile">
-          <button>All</button>
-          <button>Active</button>
-          <button>Completed</button>
-        </div>
-        <p className="todos-container__description">
-          Drag and drop to reorder list
-        </p>
-      </div>
+      <TodosContainer>
+        <TodosHeader />
+        <TodosInput
+          text={text}
+          setText={setText}
+          todosDispatch={todosDispatch}
+        />
+        <TodosUndorderedList
+          todosState={todosState}
+          todosDispatch={todosDispatch}
+        />
+        <TodosFilterMobile />
+        <TodosDescription />
+      </TodosContainer>
     </main>
   );
 }
