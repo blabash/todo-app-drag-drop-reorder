@@ -1,4 +1,4 @@
-import React, { useReducer, useState } from "react";
+import React, { useMemo, useReducer, useState } from "react";
 import moonIcon from "./images/icon-moon.svg";
 import checkIcon from "./images/icon-check.svg";
 import crossIcon from "./images/icon-cross.svg";
@@ -7,7 +7,8 @@ import "./App.css";
 type TODOACTIONTYPE =
   | { type: "add"; payload: { id: number; text: string; completed: false } }
   | { type: "delete"; payload: { id: number } }
-  | { type: "toggle"; payload: { id: number } };
+  | { type: "toggle"; payload: { id: number } }
+  | { type: "clear-completed"; payload?: null };
 
 type Todo = { id: number; text: string; completed: boolean };
 
@@ -33,6 +34,9 @@ const todosReducer = (
         return todo;
       });
 
+    case "clear-completed":
+      return state.filter((todo) => !todo.completed);
+
     default:
       console.warn("Unknown action type");
       return state;
@@ -46,18 +50,6 @@ const TodosDescription = (props: TodosDescriptionProps) => {
     <p className="todos-container__description">
       Drag and drop to reorder list
     </p>
-  );
-};
-
-type TodosFilterMobileProps = {};
-
-const TodosFilterMobile = (props: TodosFilterMobileProps) => {
-  return (
-    <div className="todos-container__filters todos-container__filters--mobile">
-      <button>All</button>
-      <button>Active</button>
-      <button>Completed</button>
-    </div>
   );
 };
 
@@ -89,6 +81,7 @@ const TodoItem = ({ todo, todosDispatch }: TodoItemProps) => {
       <p>{todo.text}</p>
       <img
         className="todos-container__delete-btn"
+        role="button"
         src={crossIcon}
         alt="delete todo button"
         data-todo-id={todo.id}
@@ -99,29 +92,42 @@ const TodoItem = ({ todo, todosDispatch }: TodoItemProps) => {
 };
 
 type TodosUnorderedListProps = {
-  todosState: TodosStateType;
+  filteredTodos: TodosStateType;
   todosDispatch: React.Dispatch<TODOACTIONTYPE>;
+  setFilter: React.Dispatch<React.SetStateAction<TodosFilters>>;
+  todosCount: number;
 };
 
 const TodosUndorderedList = ({
-  todosState,
+  filteredTodos,
   todosDispatch,
+  setFilter,
+  todosCount,
 }: TodosUnorderedListProps) => {
   return (
-    <ul className="todos-container__todo-list">
-      {todosState.map((todo) => (
-        <TodoItem key={todo.id} todo={todo} todosDispatch={todosDispatch} />
-      ))}
-      <li className="todos-container__status-tray">
-        <p>5 items left</p>
-        <div className="todos-container__filters todos-container__filters--desktop">
-          <button>All</button>
-          <button>Active</button>
-          <button>Completed</button>
-        </div>
-        <button>Clear Completed</button>
-      </li>
-    </ul>
+    <>
+      <ul className="todos-container__todo-list">
+        {filteredTodos.map((todo) => (
+          <TodoItem key={todo.id} todo={todo} todosDispatch={todosDispatch} />
+        ))}
+        <li className="todos-container__status-tray">
+          <p>{todosCount} items left</p>
+          <div className="todos-container__filters todos-container__filters--desktop">
+            <button onClick={() => setFilter("all")}>All</button>
+            <button onClick={() => setFilter("active")}>Active</button>
+            <button onClick={() => setFilter("completed")}>Completed</button>
+          </div>
+          <button onClick={() => todosDispatch({ type: "clear-completed" })}>
+            Clear Completed
+          </button>
+        </li>
+      </ul>
+      <div className="todos-container__filters todos-container__filters--mobile">
+        <button onClick={() => setFilter("all")}>All</button>
+        <button onClick={() => setFilter("active")}>Active</button>
+        <button onClick={() => setFilter("completed")}>Completed</button>
+      </div>
+    </>
   );
 };
 
@@ -147,7 +153,7 @@ const TodosInput = ({ text, setText, todosDispatch }: TodosInputProps) => {
 
   return (
     <div className="todos-container__todo-input-container">
-      <span className="todos-container__checkbox">
+      <span className="todos-container__checkbox" role="button">
         <img src={checkIcon} alt="check icon" />
       </span>
       <form onSubmit={handleOnSubmit}>
@@ -186,12 +192,37 @@ const TodosContainer = ({ children }: TodosContainerProps) => {
   return <div className="todos-container">{children}</div>;
 };
 
+type TodosFilters = "all" | "active" | "completed";
+
 function App() {
   const [text, setText] = useState("");
+  const [filter, setFilter] = useState<TodosFilters>("all");
   const [todosState, todosDispatch] = useReducer(
     todosReducer,
     initialTodosState
   );
+
+  const filteredTodos = useMemo(() => {
+    let filterFn;
+    switch (filter) {
+      case "all":
+        filterFn = () => true;
+        break;
+      case "active":
+        filterFn = () => true;
+        break;
+      case "completed":
+        filterFn = (todo: Todo) => todo.completed;
+        break;
+
+      default:
+        console.warn("That filter does not exist");
+        filterFn = () => true;
+        break;
+    }
+
+    return todosState.filter(filterFn);
+  }, [filter, todosState]);
 
   return (
     <main className="todos-app">
@@ -203,10 +234,11 @@ function App() {
           todosDispatch={todosDispatch}
         />
         <TodosUndorderedList
-          todosState={todosState}
+          filteredTodos={filteredTodos}
           todosDispatch={todosDispatch}
+          setFilter={setFilter}
+          todosCount={todosState.length}
         />
-        <TodosFilterMobile />
         <TodosDescription />
       </TodosContainer>
     </main>
