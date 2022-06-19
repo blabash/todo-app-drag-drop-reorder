@@ -91,9 +91,14 @@ const TodoItem = ({ todo, todosDispatch }: TodoItemProps) => {
   );
 };
 
+const filtersArr = ["all", "active", "completed"] as const;
+
+type TodosFilters = typeof filtersArr[number];
+
 type TodosUnorderedListProps = {
   filteredTodos: TodosStateType;
   todosDispatch: React.Dispatch<TODOACTIONTYPE>;
+  filter: TodosFilters;
   setFilter: React.Dispatch<React.SetStateAction<TodosFilters>>;
   todosCount: number;
 };
@@ -101,9 +106,21 @@ type TodosUnorderedListProps = {
 const TodosUndorderedList = ({
   filteredTodos,
   todosDispatch,
+  filter,
   setFilter,
   todosCount,
 }: TodosUnorderedListProps) => {
+  const filterBtns = filtersArr.map((filterType) => (
+    <button
+      style={{
+        color: filterType === filter ? "var(--bright-blue)" : undefined,
+      }}
+      onClick={() => setFilter(filterType)}
+    >
+      {filterType[0].toUpperCase() + filterType.slice(1)}
+    </button>
+  ));
+
   return (
     <>
       <ul className="todos-container__todo-list">
@@ -113,9 +130,7 @@ const TodosUndorderedList = ({
         <li className="todos-container__status-tray">
           <p>{todosCount} items left</p>
           <div className="todos-container__filters todos-container__filters--desktop">
-            <button onClick={() => setFilter("all")}>All</button>
-            <button onClick={() => setFilter("active")}>Active</button>
-            <button onClick={() => setFilter("completed")}>Completed</button>
+            {filterBtns}
           </div>
           <button onClick={() => todosDispatch({ type: "clear-completed" })}>
             Clear Completed
@@ -123,9 +138,7 @@ const TodosUndorderedList = ({
         </li>
       </ul>
       <div className="todos-container__filters todos-container__filters--mobile">
-        <button onClick={() => setFilter("all")}>All</button>
-        <button onClick={() => setFilter("active")}>Active</button>
-        <button onClick={() => setFilter("completed")}>Completed</button>
+        {filterBtns}
       </div>
     </>
   );
@@ -192,8 +205,6 @@ const TodosContainer = ({ children }: TodosContainerProps) => {
   return <div className="todos-container">{children}</div>;
 };
 
-type TodosFilters = "all" | "active" | "completed";
-
 function App() {
   const [text, setText] = useState("");
   const [filter, setFilter] = useState<TodosFilters>("all");
@@ -238,6 +249,7 @@ function App() {
           todosDispatch={todosDispatch}
           setFilter={setFilter}
           todosCount={todosState.length}
+          filter={filter}
         />
         <TodosDescription />
       </TodosContainer>
