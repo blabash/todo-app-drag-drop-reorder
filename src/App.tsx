@@ -215,7 +215,13 @@ type TodosContainerProps = {
 };
 
 const TodosContainer = ({ children }: TodosContainerProps) => {
-  return <div className="todos-container">{children}</div>;
+  return (
+    <>
+      <div className="bg-top"></div>
+      <div className="bg-bottom"></div>
+      <div className="todos-container">{children}</div>
+    </>
+  );
 };
 
 type ThemeType = "light" | "dark";
