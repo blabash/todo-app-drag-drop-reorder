@@ -26,10 +26,20 @@
   --very-dark-grayish-blue: hsl(237, 14%, 26%);
 }
 
+body[data-theme='light'] {
+  --colors-primary: var(--very-dark-grayish-blue);
+  --colors-background: white;
+}
+
+body[data-theme='dark'] {
+  --colors-primary: var(--light-grayish-blue);
+  --colors-background: black;
+}
+
 /* =========Typography======== */
 body {
   font-family: var(--primary-font);
-  color: var(--very-dark-grayish-blue);
+  color: var(--colors-primary);
 }
 
 h1 {

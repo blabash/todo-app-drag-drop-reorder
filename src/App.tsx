@@ -1,5 +1,13 @@
-import React, { useMemo, useReducer, useState } from "react";
+import React, {
+  createContext,
+  useContext,
+  useLayoutEffect,
+  useMemo,
+  useReducer,
+  useState,
+} from "react";
 import moonIcon from "./images/icon-moon.svg";
+import sunIcon from "./images/icon-sun.svg";
 import checkIcon from "./images/icon-check.svg";
 import crossIcon from "./images/icon-cross.svg";
 import "./App.css";
@@ -187,11 +195,16 @@ const TodosInput = ({ text, setText, todosDispatch }: TodosInputProps) => {
 type TodosHeaderProps = {};
 
 const TodosHeader = (props: TodosHeaderProps) => {
+  const { toggleTheme, theme } = useContext(ThemeContext);
   return (
     <div className="todos-container__header">
       <h1>TODO</h1>
-      <button>
-        <img src={moonIcon} alt="moon icon" />
+      <button onClick={toggleTheme}>
+        {theme === "light" ? (
+          <img src={moonIcon} alt="moon icon" />
+        ) : (
+          <img src={sunIcon} alt="sun icon" />
+        )}
       </button>
     </div>
   );
@@ -205,6 +218,15 @@ const TodosContainer = ({ children }: TodosContainerProps) => {
   return <div className="todos-container">{children}</div>;
 };
 
+type ThemeType = "light" | "dark";
+
+type ThemeContextInterface = {
+  toggleTheme: () => void;
+  theme: ThemeType;
+};
+
+const ThemeContext = createContext({} as ThemeContextInterface);
+
 function App() {
   const [text, setText] = useState("");
   const [filter, setFilter] = useState<TodosFilters>("all");
@@ -212,6 +234,21 @@ function App() {
     todosReducer,
     initialTodosState
   );
+  const [theme, setTheme] = useState<ThemeType>("light");
+
+  const themeValue = useMemo(
+    () => ({
+      toggleTheme: () => {
+        setTheme((t) => (t === "light" ? "dark" : "light"));
+      },
+      theme,
+    }),
+    [theme]
+  );
+
+  useLayoutEffect(() => {
+    document.body.dataset.theme = theme;
+  }, [theme]);
 
   const filteredTodos = useMemo(() => {
     let filterFn;
@@ -238,7 +275,9 @@ function App() {
   return (
     <main className="todos-app">
       <TodosContainer>
-        <TodosHeader />
+        <ThemeContext.Provider value={themeValue}>
+          <TodosHeader />
+        </ThemeContext.Provider>
         <TodosInput
           text={text}
           setText={setText}
