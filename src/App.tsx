@@ -83,8 +83,9 @@ const TodoItem = ({ todo, todosDispatch }: TodoItemProps) => {
         }`}
         aria-label="toggle todo completion button"
         onClick={handleToggleTodo}
+        role="button"
       >
-        <img src={checkIcon} alt="check mark" />
+        {todo.completed && <img src={checkIcon} alt="check mark" />}
       </span>
       <p>{todo.text}</p>
       <img
@@ -174,9 +175,7 @@ const TodosInput = ({ text, setText, todosDispatch }: TodosInputProps) => {
 
   return (
     <div className="todos-container__todo-input-container">
-      <span className="todos-container__checkbox" role="button">
-        <img src={checkIcon} alt="check icon" />
-      </span>
+      <span className="todos-container__checkbox"></span>
       <form onSubmit={handleOnSubmit}>
         <input
           className="todos-container__todo-input"

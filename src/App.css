@@ -15,31 +15,42 @@
   --very-light-grayish-blue: hsl(236, 33%, 92%);
   --light-grayish-blue: hsl(233, 11%, 84%);
   --dark-grayish-blue: hsl(236, 9%, 61%);
-  --very-dark-grayish-blue: hsl(235, 19%, 35%);
+  --light-very-dark-grayish-blue: hsl(235, 19%, 35%);
   /* Dark Theme Colors */
   --very-dark-blue: hsl(235, 21%, 11%);
   --very-dark-desaturated-blue: hsl(235, 24%, 19%);
   --light-grayish-blue: hsl(234, 39%, 85%);
   --light-grayish-blue-hover: hsl(236, 33%, 92%);
   --dark-grayish-blue: hsl(234, 11%, 52%);
-  --very-dark-grayish-blue: hsl(233, 14%, 35%);
-  --very-dark-grayish-blue: hsl(237, 14%, 26%);
+  --very-dark-grayish-blue-one: hsl(233, 14%, 35%);
+  --very-dark-grayish-blue-two: hsl(237, 14%, 26%);
 }
 
 body[data-theme='light'] {
-  --colors-primary: var(--very-dark-grayish-blue);
-  --colors-background: white;
+  --txt-color-primary: var(--very-dark-grayish-blue-two);
+  --bg-color-primary: white;
+  --bg-color-secondary: white;
+  --bg-color-tertiary: var(--light-grayish-blue);
+  --box-shadow-color: var(--very-light-grayish-blue);
+  --bg-top-img-mobile: url(./images/bg-mobile-light.jpg);
+  --bg-top-img-desktop: url(./images/bg-desktop-light.jpg);
 }
 
 body[data-theme='dark'] {
-  --colors-primary: var(--light-grayish-blue);
-  --colors-background: black;
+  --txt-color-primary: var(--light-grayish-blue);
+  --bg-color-primary: var(--very-dark-blue);
+  --bg-color-secondary: var(--very-dark-grayish-blue-two);
+  --bg-color-tertiary: var(--light-very-dark-grayish-blue);
+  --box-shadow-color: black;
+  --bg-top-img-mobile: url(./images/bg-mobile-dark.jpg);
+  --bg-top-img-desktop: url(./images/bg-desktop-dark.jpg);
 }
 
 /* =========Typography======== */
 body {
   font-family: var(--primary-font);
-  color: var(--colors-primary);
+  color: var(--txt-color-primary);
+  transition: background-image 300ms, background-color 300ms, box-shadow 300ms;
 }
 
 h1 {
@@ -48,16 +59,17 @@ h1 {
 }
 
 /* =========Elements======== */
+*::before,
+* {
+  transition: inherit;
+}
+
 p,
 h1 {
   margin: 0;
 }
 
-input {
-  font-size: inherit;
-  font-family: inherit;
-}
-
+input,
 button {
   background-color: inherit;
   font-family: inherit;
@@ -66,6 +78,10 @@ button {
   color: inherit;
   border: none;
   padding: 0;
+}
+
+*[role="button"],
+button {
   cursor: pointer;
 }
 
@@ -83,14 +99,14 @@ ul {
 }
 
 .bg-top {
-  background-image: url(./images/bg-mobile-light.jpg);
+  background-image: var(--bg-top-img-mobile);
   background-size: cover;
   background-position: center;
-  background-color: var(--very-dark-blue);
+  background-color: var(--bg-color-primary);
 }
 
 .bg-bottom {
-  background-color: white;
+  background-color: var(--bg-color-primary);
   z-index: -2;
 }
 
@@ -122,13 +138,14 @@ ul {
   display: grid;
   grid-template-columns: auto 1fr;
   align-items: center;
-  background-color: white;
+  background-color: var(--bg-color-secondary);
   padding: 1em;
 }
 
 .todos-container__todo-input {
   border: none;
   width: 100%;
+  background-color: inherit;
 }
 
 .todos-container__todo-input:focus {
@@ -143,9 +160,8 @@ ul {
   width: .5rem;
   height: .5rem;
   border-radius: 50%;
-  border: 1px solid var(--light-grayish-blue);
+  border: 1px solid var(--bg-color-tertiary);
   margin-right: 1em;
-  cursor: pointer;
 }
 
 .todos-container__checkbox--complete {
@@ -158,21 +174,11 @@ ul {
 
 .todos-container__todo-list {
   position: relative;
-  background-color: white;
-}
-
-/* this ::before element is for -z box-shadow */
-.todos-container__todo-list::before {
-  content: "";
-  position: absolute;
-  border-radius: var(--todo-list-border-radius);
-  inset: 0;
-  z-index: -1;
-  box-shadow: 0px 40px 70px 10px #e6e6e6;
+  background-color: var(--bg-color-secondary);
 }
 
 .todos-container__todo-list>li+li {
-  border-top: 1px solid var(--light-grayish-blue);
+  border-top: 1px solid var(--bg-color-tertiary);
 }
 
 .todos-container__todo-item {
@@ -196,18 +202,19 @@ ul {
   gap: 1em;
   padding: 1em;
   font-weight: bold;
-  background-color: white;
+  background-color: var(--bg-color-secondary);
   color: var(--dark-grayish-blue);
 }
 
 /* this ::before element is for -z box-shadow */
+.todos-container__todo-list::before,
 .todos-container__filters::before {
   content: "";
   position: absolute;
   border-radius: var(--todo-list-border-radius);
   inset: 0;
   z-index: -1;
-  box-shadow: 0px 50px 70px 10px #e6e6e6;
+  box-shadow: 0px 10px 70px 10px var(--box-shadow-color);
 }
 
 .todos-container__filters--desktop {
@@ -227,7 +234,7 @@ ul {
 
   /* =========Elements======== */
   .bg-top {
-    background-image: url(./images/bg-desktop-light.jpg);
+    background-image: var(--bg-top-img-desktop);
     background-size: cover;
     background-position: center;
     background-color: var(--very-dark-blue);
