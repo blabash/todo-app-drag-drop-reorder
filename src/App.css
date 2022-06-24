@@ -71,7 +71,7 @@ h1 {
 
 input,
 button {
-  background-color: inherit;
+  background-color: initial;
   font-family: inherit;
   font-size: inherit;
   font-weight: inherit;
