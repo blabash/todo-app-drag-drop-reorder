@@ -241,6 +241,20 @@ function App() {
   );
   const [theme, setTheme] = useState<ThemeType>("light");
 
+  /* change opacity for the dragged item. 
+  remember the source item for the drop later */
+  // const handleDragStart = (event) => {
+  //   event.target.style.opacity = 0.5;
+  //   sourceElement = event.target;
+  //   event.dataTransfer.effectAllowed = "move";
+  // };
+
+  /* do not trigger default event of item while passing (e.g. a link) */
+  // const handleDragOver = (event) => {
+  //   event.preventDefault();
+  //   event.dataTransfer.dropEffect = "move";
+  // };
+
   const themeValue = useMemo(
     () => ({
       toggleTheme: () => {
