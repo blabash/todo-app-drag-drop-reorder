@@ -118,7 +118,7 @@ const TodoItem = ({ todo, idx, todosDispatch }: TodoItemProps) => {
   remember the source item for the drop later */
   const handleDragStart = (event: React.DragEvent<HTMLLIElement>) => {
     event.currentTarget.style.opacity = "0.5";
-    event.dataTransfer.setData("text", todo.id.toString());
+    event.dataTransfer.setData("text/plain", todo.id.toString());
     event.dataTransfer.effectAllowed = "move";
   };
 
@@ -143,21 +143,24 @@ const TodoItem = ({ todo, idx, todosDispatch }: TodoItemProps) => {
   const handleDrop = (event: React.DragEvent<HTMLLIElement>) => {
     /* prevent redirect in some browsers*/
     event.stopPropagation();
+    event.preventDefault();
     /* only do something if the dropped on item is 
     different to the dragged item*/
-    const id = event.dataTransfer.getData("text");
-    if (id !== event.currentTarget.dataset.idx) {
+    const sourceId = event.dataTransfer.getData("text/plain");
+    if (sourceId !== event.currentTarget.id) {
       todosDispatch({
         type: "splice-in",
         payload: {
-          id: Number(id),
+          id: Number(sourceId),
           idx: Number(event.currentTarget.dataset.idx),
         },
       });
     } else {
       console.log("drag n' drop operation failed");
     }
-    event.currentTarget.classList.remove("over");
+    event.currentTarget.classList.remove(
+      "todos-container__todo-item--drag-over"
+    );
   };
 
   const handleDragEnd = (event: React.DragEvent<HTMLLIElement>) => {
@@ -170,7 +173,7 @@ const TodoItem = ({ todo, idx, todosDispatch }: TodoItemProps) => {
   return (
     <li
       data-idx={idx.toString()}
-      data-todo-id={todo.id}
+      id={String(todo.id)}
       className="todos-container__todo-item"
       draggable={true}
       onDragStart={handleDragStart}
