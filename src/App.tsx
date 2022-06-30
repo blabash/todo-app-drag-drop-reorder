@@ -4,6 +4,7 @@ import React, {
   useLayoutEffect,
   useMemo,
   useReducer,
+  useRef,
   useState,
 } from "react";
 import moonIcon from "./images/icon-moon.svg";
@@ -16,7 +17,8 @@ type TODOACTIONTYPE =
   | { type: "add"; payload: { id: number; text: string; completed: false } }
   | { type: "delete"; payload: { id: number } }
   | { type: "toggle"; payload: { id: number } }
-  | { type: "clear-completed"; payload?: null };
+  | { type: "clear-completed"; payload?: null }
+  | { type: "splice-in"; payload: { id: number; idx: number } };
 
 type Todo = { id: number; text: string; completed: boolean };
 
@@ -45,6 +47,42 @@ const todosReducer = (
     case "clear-completed":
       return state.filter((todo) => !todo.completed);
 
+    case "splice-in":
+      /* remove dragged item from list */
+      const list = state.filter((todo) => todo.id !== payload.id);
+
+      /* this is the removed item */
+      const removed = state.find((todo) => todo.id === payload.id);
+
+      /* insert removed item after this number. */
+      const insertAt = payload.idx;
+
+      console.log("list with item removed", list);
+      console.log("removed:  line", removed);
+      console.log("insertAt index", insertAt);
+
+      /* if dropped at last item, don't increase target id by +1. 
+         max-index is arr.length */
+      if (removed) {
+        if (insertAt >= list.length) {
+          return list.slice(0).concat(removed);
+          // event.target.classList.remove("over");
+        } else if (insertAt < list.length) {
+          /* original list without removed item until the index it was removed at */
+          const tempList = list.slice(0, insertAt).concat(removed);
+
+          console.log("tempList", tempList);
+          console.log("insert the rest: ", list.slice(insertAt));
+
+          /* add the remaining items to the list */
+          return tempList.concat(list.slice(insertAt));
+          // event.target.classList.remove("over");
+        }
+      }
+
+      console.warn("cannot find item to remove");
+      return state;
+
     default:
       console.warn("Unknown action type");
       return state;
@@ -63,10 +101,11 @@ const TodosDescription = (props: TodosDescriptionProps) => {
 
 type TodoItemProps = {
   todo: Todo;
+  idx: number;
   todosDispatch: React.Dispatch<TODOACTIONTYPE>;
 };
 
-const TodoItem = ({ todo, todosDispatch }: TodoItemProps) => {
+const TodoItem = ({ todo, idx, todosDispatch }: TodoItemProps) => {
   const handleDeleteTodo = () => {
     todosDispatch({ type: "delete", payload: { id: todo.id } });
   };
@@ -75,8 +114,72 @@ const TodoItem = ({ todo, todosDispatch }: TodoItemProps) => {
     todosDispatch({ type: "toggle", payload: { id: todo.id } });
   };
 
+  /* change opacity for the dragged item. 
+  remember the source item for the drop later */
+  const handleDragStart = (event: React.DragEvent<HTMLLIElement>) => {
+    event.currentTarget.style.opacity = "0.5";
+    event.dataTransfer.setData("text", todo.id.toString());
+    event.dataTransfer.effectAllowed = "move";
+  };
+
+  /* do not trigger default event of item while passing (e.g. a link) */
+  const handleDragOver = (event: React.DragEvent<HTMLLIElement>) => {
+    event.preventDefault();
+    event.dataTransfer.dropEffect = "move";
+  };
+
+  /* add class .over while hovering other items */
+  const handleDragEnter = (event: React.DragEvent<HTMLLIElement>) => {
+    event.currentTarget.classList.add("todos-container__todo-item--drag-over");
+  };
+
+  /* remove class .over when not hovering over an item anymore*/
+  const handleDragLeave = (event: React.DragEvent<HTMLLIElement>) => {
+    event.currentTarget.classList.remove(
+      "todos-container__todo-item--drag-over"
+    );
+  };
+
+  const handleDrop = (event: React.DragEvent<HTMLLIElement>) => {
+    /* prevent redirect in some browsers*/
+    event.stopPropagation();
+    /* only do something if the dropped on item is 
+    different to the dragged item*/
+    const id = event.dataTransfer.getData("text");
+    if (id !== event.currentTarget.dataset.idx) {
+      todosDispatch({
+        type: "splice-in",
+        payload: {
+          id: Number(id),
+          idx: Number(event.currentTarget.dataset.idx),
+        },
+      });
+    } else {
+      console.log("drag n' drop operation failed");
+    }
+    event.currentTarget.classList.remove("over");
+  };
+
+  const handleDragEnd = (event: React.DragEvent<HTMLLIElement>) => {
+    event.currentTarget.style.opacity = "1";
+    console.log(
+      "-------------------------------------------------------------"
+    );
+  };
+
   return (
-    <li className="todos-container__todo-item">
+    <li
+      data-idx={idx.toString()}
+      data-todo-id={todo.id}
+      className="todos-container__todo-item"
+      draggable={true}
+      onDragStart={handleDragStart}
+      onDragOver={handleDragOver}
+      onDragEnter={handleDragEnter}
+      onDragLeave={handleDragLeave}
+      onDrop={handleDrop}
+      onDragEnd={handleDragEnd}
+    >
       <span
         className={`todos-container__checkbox${
           todo.completed ? " todos-container__checkbox--complete" : ""
@@ -133,8 +236,13 @@ const TodosUndorderedList = ({
   return (
     <>
       <ul className="todos-container__todo-list">
-        {filteredTodos.map((todo) => (
-          <TodoItem key={todo.id} todo={todo} todosDispatch={todosDispatch} />
+        {filteredTodos.map((todo, idx) => (
+          <TodoItem
+            key={todo.id}
+            todo={todo}
+            idx={idx}
+            todosDispatch={todosDispatch}
+          />
         ))}
         <li className="todos-container__status-tray">
           <p>{todosCount} items left</p>
@@ -240,20 +348,6 @@ function App() {
     initialTodosState
   );
   const [theme, setTheme] = useState<ThemeType>("light");
-
-  /* change opacity for the dragged item. 
-  remember the source item for the drop later */
-  // const handleDragStart = (event) => {
-  //   event.target.style.opacity = 0.5;
-  //   sourceElement = event.target;
-  //   event.dataTransfer.effectAllowed = "move";
-  // };
-
-  /* do not trigger default event of item while passing (e.g. a link) */
-  // const handleDragOver = (event) => {
-  //   event.preventDefault();
-  //   event.dataTransfer.dropEffect = "move";
-  // };
 
   const themeValue = useMemo(
     () => ({

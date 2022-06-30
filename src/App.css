@@ -177,7 +177,7 @@ ul {
   background-color: var(--bg-color-secondary);
 }
 
-.todos-container__todo-list > li+li {
+.todos-container__todo-list > li + li {
   border-top: 1px solid var(--bg-color-tertiary);
 }
 
@@ -186,6 +186,10 @@ ul {
   grid-template-columns: auto 1fr auto;
   align-items: center;
   padding: 1em;
+}
+
+.todos-container__todo-item--drag-over {
+  transform: scale(1.1);
 }
 
 .todos-container__status-tray {
