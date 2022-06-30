@@ -114,26 +114,21 @@ const TodoItem = ({ todo, idx, todosDispatch }: TodoItemProps) => {
     todosDispatch({ type: "toggle", payload: { id: todo.id } });
   };
 
-  /* change opacity for the dragged item. 
-  remember the source item for the drop later */
   const handleDragStart = (event: React.DragEvent<HTMLLIElement>) => {
-    event.currentTarget.style.opacity = "0.5";
+    /* remember the source item for the drop later */
     event.dataTransfer.setData("text/plain", todo.id.toString());
     event.dataTransfer.effectAllowed = "move";
   };
 
-  /* do not trigger default event of item while passing (e.g. a link) */
   const handleDragOver = (event: React.DragEvent<HTMLLIElement>) => {
     event.preventDefault();
     event.dataTransfer.dropEffect = "move";
   };
 
-  /* add class .over while hovering other items */
   const handleDragEnter = (event: React.DragEvent<HTMLLIElement>) => {
     event.currentTarget.classList.add("todos-container__todo-item--drag-over");
   };
 
-  /* remove class .over when not hovering over an item anymore*/
   const handleDragLeave = (event: React.DragEvent<HTMLLIElement>) => {
     event.currentTarget.classList.remove(
       "todos-container__todo-item--drag-over"
@@ -141,7 +136,6 @@ const TodoItem = ({ todo, idx, todosDispatch }: TodoItemProps) => {
   };
 
   const handleDrop = (event: React.DragEvent<HTMLLIElement>) => {
-    /* prevent redirect in some browsers*/
     event.stopPropagation();
     event.preventDefault();
     /* only do something if the dropped on item is 
@@ -164,7 +158,6 @@ const TodoItem = ({ todo, idx, todosDispatch }: TodoItemProps) => {
   };
 
   const handleDragEnd = (event: React.DragEvent<HTMLLIElement>) => {
-    event.currentTarget.style.opacity = "1";
     console.log(
       "-------------------------------------------------------------"
     );

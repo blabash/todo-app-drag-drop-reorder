@@ -191,12 +191,18 @@ ul {
   padding: 1em;
 }
 
-.todos-container__todo-item--drag-over {
-  transform: scale(1.1);
+.todos-container__todo-item:active {
+  cursor: grabbing;
 }
 
 .todos-container__todo-item * {
+  /* prevent dragEnter/dragLeave from refiring on elements nested in li */
   pointer-events: none;
+}
+
+.todos-container__todo-item--drag-over {
+  opacity: .5;
+  transform: scale(1.1);
 }
 
 .todos-container__status-tray {
