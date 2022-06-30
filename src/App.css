@@ -191,11 +191,7 @@ ul {
   padding: 1em;
 }
 
-.todos-container__todo-item:active {
-  cursor: grabbing;
-}
-
-.todos-container__todo-item * {
+.todos-container__todo-item *:not(span,img) {
   /* prevent dragEnter/dragLeave from refiring on elements nested in li */
   pointer-events: none;
 }
