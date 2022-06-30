@@ -184,7 +184,7 @@ ul {
 .todos-container__todo-item {
   cursor: move; /* fallback if grab cursor is unsupported */
   cursor: grab;
-  background-color: inherit;
+  background-color: transparent;
   display: grid;
   grid-template-columns: auto 1fr auto;
   align-items: center;
@@ -199,6 +199,7 @@ ul {
 .todos-container__todo-item--drag-over {
   opacity: .5;
   transform: scale(1.1);
+  background-color: inherit;
 }
 
 .todos-container__status-tray {

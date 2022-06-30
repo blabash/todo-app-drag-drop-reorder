@@ -4,7 +4,6 @@ import React, {
   useLayoutEffect,
   useMemo,
   useReducer,
-  useRef,
   useState,
 } from "react";
 import moonIcon from "./images/icon-moon.svg";
@@ -50,33 +49,21 @@ const todosReducer = (
     case "splice-in":
       /* remove dragged item from list */
       const list = state.filter((todo) => todo.id !== payload.id);
-
       /* this is the removed item */
       const removed = state.find((todo) => todo.id === payload.id);
-
       /* insert removed item after this number. */
       const insertAt = payload.idx;
-
-      console.log("list with item removed", list);
-      console.log("removed:  line", removed);
-      console.log("insertAt index", insertAt);
-
       /* if dropped at last item, don't increase target id by +1. 
          max-index is arr.length */
       if (removed) {
         if (insertAt >= list.length) {
           return list.slice(0).concat(removed);
-          // event.target.classList.remove("over");
         } else if (insertAt < list.length) {
           /* original list without removed item until the index it was removed at */
           const tempList = list.slice(0, insertAt).concat(removed);
-
-          console.log("tempList", tempList);
-          console.log("insert the rest: ", list.slice(insertAt));
-
+          const restOfList = list.slice(insertAt);
           /* add the remaining items to the list */
-          return tempList.concat(list.slice(insertAt));
-          // event.target.classList.remove("over");
+          return tempList.concat(restOfList);
         }
       }
 
@@ -157,12 +144,6 @@ const TodoItem = ({ todo, idx, todosDispatch }: TodoItemProps) => {
     );
   };
 
-  const handleDragEnd = (event: React.DragEvent<HTMLLIElement>) => {
-    console.log(
-      "-------------------------------------------------------------"
-    );
-  };
-
   return (
     <li
       data-idx={idx.toString()}
@@ -174,7 +155,6 @@ const TodoItem = ({ todo, idx, todosDispatch }: TodoItemProps) => {
       onDragEnter={handleDragEnter}
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
-      onDragEnd={handleDragEnd}
     >
       <span
         className={`todos-container__checkbox${
