@@ -350,7 +350,7 @@ function App() {
         filterFn = () => true;
         break;
       case "active":
-        filterFn = () => true;
+        filterFn = (todo: Todo) => !todo.completed;
         break;
       case "completed":
         filterFn = (todo: Todo) => todo.completed;
