@@ -166,7 +166,11 @@ const TodoItem = ({ todo, idx, todosDispatch }: TodoItemProps) => {
       >
         {todo.completed && <img src={checkIcon} alt="check mark" />}
       </span>
-      <p>{todo.text}</p>
+      <p
+        className={todo.completed ? "todos-container__todo-text--complete" : ""}
+      >
+        {todo.text}
+      </p>
       <img
         className="todos-container__delete-btn"
         role="button"

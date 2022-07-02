@@ -202,6 +202,11 @@ ul {
   background-color: inherit;
 }
 
+.todos-container__todo-text--complete {
+  text-decoration: line-through;
+  color: var(--bg-color-tertiary);
+}
+
 .todos-container__status-tray {
   display: flex;
   justify-content: space-between;
