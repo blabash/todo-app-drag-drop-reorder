@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/todo-app-drag-drop-reorder/static/css/main.f0ec8044.css",
-    "main.js": "/todo-app-drag-drop-reorder/static/js/main.c3b66c5f.js",
+    "main.css": "/todo-app-drag-drop-reorder/static/css/main.0228e609.css",
+    "main.js": "/todo-app-drag-drop-reorder/static/js/main.74b44409.js",
     "static/js/787.42084a3f.chunk.js": "/todo-app-drag-drop-reorder/static/js/787.42084a3f.chunk.js",
     "static/media/bg-desktop-light.jpg": "/todo-app-drag-drop-reorder/static/media/bg-desktop-light.3508d620efd5a52bb4ce.jpg",
     "static/media/bg-desktop-dark.jpg": "/todo-app-drag-drop-reorder/static/media/bg-desktop-dark.73e47dbb723ebc772ef0.jpg",
@@ -10,12 +10,12 @@
     "static/media/icon-moon.svg": "/todo-app-drag-drop-reorder/static/media/icon-moon.6c03114b495d05f4380b3c544d9afe2a.svg",
     "static/media/icon-cross.svg": "/todo-app-drag-drop-reorder/static/media/icon-cross.6ee81d30b75cab19d6f7314624fcc4d6.svg",
     "static/media/icon-check.svg": "/todo-app-drag-drop-reorder/static/media/icon-check.a8fb15d0278c8e312df5fc8364fef863.svg",
-    "main.f0ec8044.css.map": "/todo-app-drag-drop-reorder/static/css/main.f0ec8044.css.map",
-    "main.c3b66c5f.js.map": "/todo-app-drag-drop-reorder/static/js/main.c3b66c5f.js.map",
+    "main.0228e609.css.map": "/todo-app-drag-drop-reorder/static/css/main.0228e609.css.map",
+    "main.74b44409.js.map": "/todo-app-drag-drop-reorder/static/js/main.74b44409.js.map",
     "787.42084a3f.chunk.js.map": "/todo-app-drag-drop-reorder/static/js/787.42084a3f.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.f0ec8044.css",
-    "static/js/main.c3b66c5f.js"
+    "static/css/main.0228e609.css",
+    "static/js/main.74b44409.js"
   ]
 }
