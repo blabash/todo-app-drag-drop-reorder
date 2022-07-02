@@ -270,8 +270,6 @@ const TodosInput = ({ text, setText, todosDispatch }: TodosInputProps) => {
           value={text}
           onChange={handleOnChange}
           type="text"
-          name=""
-          id=""
           placeholder="Create a new todo..."
         />
       </form>
